@@ -22,77 +22,81 @@ P_DTLZ <- function(Operation, Problem, M, Input){
     Coding <- NaN
     if (Operation == "init"){
             k <- find_last_alphabet_index(Problem)
-            K_DTLZ <- c(5, 10, 10, 10, 10, 10, 20)
-            K_DTLZ <- K_DTLZ[as.numeric(substr(Problem, k+1, length(Problem)))]
+            K_DTLZ <<- c(5, 10, 10, 10, 10, 10, 20)
+            K_DTLZ <<- K_DTLZ[as.numeric(substr(Problem, k+1, length(Problem)))]
 
-            D <- M+K-1
+            D <- M+K_DTLZ-1
             MaxValue   <- rep(1,D)
             MinValue   <- rep(0,D)
             # wrote util for rand
             Population <- rand(Input,D)
-            Population <- Population.*repmat(MaxValue,Input,1)+(1-Population).*repmat(MinValue,Input,1)
+            Population <- Population*repmat(MaxValue,Input,1)+(1-Population)*repmat(MinValue,Input,1)
 
             Output   <- Population
-            Boundary <- [MaxValue;MinValue]
+            Boundary <- c(MaxValue,MinValue)
             Coding   <- 'Real'
     }
         #Objective Function Evaluation
-        case 'value'
+    else if (Operation == 'value'){
             Population    <- Input
             FunctionValue <- zeros(size(Population,1),M)
-            switch Problem
-                case 'DTLZ1'
-                    g <- 100*(K+sum((Population(:,M:length(Population))-0.5).^2-cos(20.*pi.*(Population(:,M:length(Population))-0.5)),2))
-                    for (i in 1 : M){
-                        FunctionValue(:,i) <- 0.5.*prod(Population(:,1:M-i),2).*(1+g)
-                        if (i > 1){
-                            FunctionValue(:,i) <- FunctionValue(:,i).*(1-Population(:,M-i+1))
-                        }
-                    }
-                case 'DTLZ2'
-                    g <- sum((Population(:,M:length(Population))-0.5).^2,2)
-                    for (i in 1 : M){
-                        FunctionValue(:,i) <- (1+g).*prod(cos(0.5.*pi.*Population(:,1:M-i)),2)
-                        if (i > 1){
-                            FunctionValue(:,i) <- FunctionValue(:,i).*sin(0.5.*pi.*Population(:,M-i+1))
-                        }
-                    }
-                case 'DTLZ3'
-                    g <- 100*(K+sum((Population(:,M:length(Population))-0.5).^2-cos(20.*pi.*(Population(:,M:length(Population))-0.5)),2))
-                    for (i in 1 : M){
-                        FunctionValue(:,i) <- (1+g).*prod(cos(0.5.*pi.*Population(:,1:M-i)),2)
-                        if (i > 1){
-                            FunctionValue(:,i) <- FunctionValue(:,i).*sin(0.5.*pi.*Population(:,M-i+1))
-                        }
-                    }
-                case 'DTLZ4'
-                    Population(:,1:M-1) <- Population(:,1:M-1).^100
-                    g <- sum((Population(:,M:length(Population))-0.5).^2,2)
-                    for (i in 1 : M){
-                        FunctionValue(:,i) <- (1+g).*prod(cos(0.5.*pi.*Population(:,1:M-i)),2)
-                        if (i > 1){
-                            FunctionValue(:,i) <- FunctionValue(:,i).*sin(0.5.*pi.*Population(:,M-i+1))
-                        }
-                    }
+            if (Problem == "DTLZ1") {
+                  g <- 100*(K_DTLZ+t(rowSums((Population[,M:length(Population)]-0.5)^2-cos(20*pi*(Population[,M:length(Population)]-0.5)))))
+                  for (i in 1 : M){
+                      FunctionValue[,i] <- 0.5*rowProd(Population[,1:(M-i)])*(1+g)
+                      if (i > 1){
+                          FunctionValue[,i] <- FunctionValue[,i]*(1-Population[,M-i+1])
+                      }
+                  }
+            }
+            else if (Problem == 'DTLZ2'){
+                  g <- t(rowSums((Population[,M:length(Population)]-0.5)^2))
+                  for (i in 1 : M){
+                      FunctionValue[,i] <- (1+g)*rowProd(cos(0.5*pi*Population[,1:M-i]))
+                      if (i > 1){
+                          FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*Population[,M-i+1])
+                      }
+                  }
+            }
+            else if (Problem == 'DTLZ3'){
+                  g <- 100*(K_DTLZ+t(rowSums((Population[,M:length(Population)]-0.5)^2-cos(20*pi*(Population[,M:length(Population)]-0.5)))))
+                  for (i in 1 : M){
+                      FunctionValue[,i] <- (1+g)*rowProd(cos(0.5*pi*Population[,1:M-i]))
+                      if (i > 1){
+                          FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*Population[,M-i+1])
+                      }
+                  }
+            }
+          else if (Problem == "DTLZ4"){
+                  Population[,1:M-1] <- Population[,1:M-1]^100
+                  g <- t(rowSums((Population[,M:length(Population)]-0.5)^2))
+                  for (i in 1 : M){
+                      FunctionValue[,i] <- (1+g)*rowProd(cos(0.5*pi*Population[,1:M-i]))
+                      if (i > 1){
+                          FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*Population[,M-i+1])
+                      }
+                  }
             }
             Output <- FunctionValue
+    }
+    else if (Operation == 'true') {
         #Sample True PFs
-        case 'true'
-            switch Problem
-                case 'DTLZ1'
-                    Population in T_uniform(Input,M)){){
-                    Population <- Population/2
-                case {'DTLZ2','DTLZ3','DTLZ4'}
-                    Population in T_uniform(Input,M)){){
-                    for (i in 1 : size(Population,1)){
-                    	Population(i,:) <- Population(i,:)./norm(Population(i,:))
-                    }
-            }
-            Output <- Population
+        
+        if (Problem == "DTLZ1"){
+                Population <- T_uniform(Input,M)
+                Population <- Population/2
+        }
+        else if (Problem %in% c('DTLZ2', 'DTLZ3', 'DTLZ4')){
+                Population = T_uniform(Input,M)
+                for (i in 1 : dim(Population,1)){
+                	Population[i,] <- Population[i,]/sqrt( sum(Population[i,]^2) )
+                }
+        }
+        Output <- Population
     }
 }
 
-
+K_DTLZ2 <- 0
 function [Output,Boundary,Coding] <- P_SDTLZ(Operation,Problem,M,Input)
     persistent K
     persistent F
@@ -101,8 +105,8 @@ function [Output,Boundary,Coding] <- P_SDTLZ(Operation,Problem,M,Input)
         #Population Initialization
         case 'init'
             k <- find(!isstrprop(Problem,'digit'),1,'last')
-            K <- [5 10 10 10 10 10 20]
-            K <- K(str2double(Problem(k+1:length(Problem))))
+            K_DTLZ2 <<- c(5, 10, 10, 10, 10, 10, 20)
+            K <<- K_DTLZ2(as.numeric(Problem(k+1:length(Problem))))
             F <- [10 10 10 10 10 5 4 3 2 2]
             F <- F(M)
 

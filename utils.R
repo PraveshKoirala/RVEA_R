@@ -38,3 +38,16 @@ find_first_string <- function(Problem){
   substr(Problem, 1, k)
 }
 
+rowProd <- function(mat, dimension){
+  if (!is.matrix(mat)){
+    mat <- as.matrix(mat)
+  }
+  apply(FUN = prod, mat, MARGIN = 1)
+}
+
+colProd <- function(mat, dimension){
+  if (!is.matrix(mat)){
+    mat <- as.matrix(mat)
+  }
+  t(apply(FUN = prod, mat, MARGIN = 2))
+}
