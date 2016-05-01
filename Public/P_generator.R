@@ -33,8 +33,9 @@ P_generator <- function(MatingPool,Boundary,Coding,MaxOffspring = 0){
             MaxValue <- Boundary[1,]
             MinValue <- Boundary[2,]
         } else {
-            MaxValue <- kronecker(matrix(1, MaxOffspring), Boundary[1, ])
-            MinValue <- kronecker(matrix(1, MaxOffspring), Boundary[2, ])
+            # repmat defined at utils
+            MaxValue = repmat(Boundary[1,], MaxOffspring,1);
+            MinValue = repmat(Boundary[2,], MaxOffspring,1);
         }
         k    <- matrix(runif(MaxOffspring * D), MaxOffspring)
         miu  <- matrix(runif(MaxOffspring * D), MaxOffspring)

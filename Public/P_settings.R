@@ -9,9 +9,7 @@ rfind <- function(x) seq(along=x)[x != 0]
 
 set_problem <- function(Problem,M){
     # find last index that's not the digit.. probably can be optimized a lot.
-    problem_list <- strsplit(Problem, split='')[[1]]
-    k <- rfind(grepl("[[:digit:]]", problem_list))
-    k <- k[length(k)]
+    k <- find_last_alphabet_index(Problem)
     
     D <- as.numeric(Problem[k+1:length(Problem)])
     Problem <- Problem[1:k]
@@ -39,9 +37,7 @@ set_algorithm <- function(Algorithm,Problem,M){
     Parameter <- c(NaN, NaN)
     
     # find last index that's not the digit.. probably can be optimized a lot.
-    problem_list <- strsplit(Problem, split='')[[1]]
-    k <- rfind(grepl("[[:digit:]]", problem_list))
-    k <- k[length(k)]
+    k <- find_last_alphabet_index(Problem)
     
     D <- as.numeric(Problem[k+1:length(Problem)])
     Problem <- Problem[1:k]
