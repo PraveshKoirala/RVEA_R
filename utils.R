@@ -81,6 +81,30 @@ Sum <- function(mat, axis){
     
 }
 
+Min <- function(mat, axis){
+  if (!is.matrix(mat)){
+    stop("Must be matrix")
+  }
+  if (axis == 2)
+    as.matrix(apply(FUN = min, mat, MARGIN = 1))
+  else if (axis == 1)
+    t(apply(FUN = min, mat, MARGIN = 2))
+  else
+    stop("This operation not supported")
+}
+
+Max <- function(mat, axis){
+  if (!is.matrix(mat)){
+    stop("Must be matrix")
+  }
+  if (axis == 2)
+    as.matrix(apply(FUN = max, mat, MARGIN = 1))
+  else if (axis == 1)
+    t(apply(FUN = max, mat, MARGIN = 2))
+  else
+    stop("This operation not supported")
+}
+
 zeros <- function(M, N=0){
   if (N == 0)
     N <- M
@@ -127,4 +151,18 @@ nchoosek = function(n, x) {
     # n is a set.. R contains a function that emulates the behaviour of nchoosek
     return (t(combn(n, x)))
   }
+}
+
+# to return multiple values, we require this hack
+
+list <- structure(NA,class="result")
+"[<-.result" <- function(x,...,value) {
+  args <- as.list(match.call())
+  args <- args[-c(1:2,length(args))]
+  length(value) <- length(args)
+  for(i in seq(along=args)) {
+    a <- args[[i]]
+    if(!missing(a)) eval.parent(substitute(a <- v,list(a=a,v=value[[i]])))
+  }
+  x
 }
