@@ -8,6 +8,8 @@ sourceall <- function(directory){
   }
 }
 
+printf <- function(...) invisible(print(sprintf(...)))
+
 rand <- function(row, col){
   matrix(runif(row*col), row)
 }
