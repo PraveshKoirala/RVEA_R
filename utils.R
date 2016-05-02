@@ -14,6 +14,11 @@ rand <- function(row, col){
 
 # see this at http://haky-functions.blogspot.com/2006/11/repmat-function-matlab.html
 repmat <- function(X,m,n=1){
+  if (is.matrix(m)){
+    n <- m[1, 2]
+    m <- m[1, 1]
+  }
+  
   if (!is.matrix(X)){
     X <- t(X)
   }
@@ -38,16 +43,88 @@ find_first_string <- function(Problem){
   substr(Problem, 1, k)
 }
 
-rowProd <- function(mat, dimension){
+rowProd <- function(mat){
   if (!is.matrix(mat)){
-    mat <- as.matrix(mat)
+    stop("Must be matrix")
   }
-  apply(FUN = prod, mat, MARGIN = 1)
+  as.matrix(apply(FUN = prod, mat, MARGIN = 1))
 }
 
-colProd <- function(mat, dimension){
+colProd <- function(mat){
   if (!is.matrix(mat)){
-    mat <- as.matrix(mat)
+    stop("Must be matrix")
   }
   t(apply(FUN = prod, mat, MARGIN = 2))
+}
+
+Prod <- function(mat, axis){
+  if (axis == 1){
+    colProd(mat)
+  }
+  else if (axis == 2){
+    rowProd(mat)
+  }
+  else
+    stop ("This product not supported")
+}
+
+Sum <- function(mat, axis){
+  if (!is.matrix(mat)){
+    stop("Must be matrix")
+  }
+  if (axis == 2)
+    as.matrix(apply(FUN = prod, mat, MARGIN = 1))
+  else if (axis == 1)
+    t(apply(FUN = prod, mat, MARGIN = 2))
+  else
+    stop("This sum not supported")
+    
+}
+
+zeros <- function(M, N=0){
+  if (N == 0)
+    N <- M
+  return (matrix(0, M, N))
+}
+
+ones <- function(M, N= 0){
+  if (N == 0)
+    N <- M
+  return (matrix(1, M, N))
+}
+
+size <- function(mat, axis = 0){
+  if (!is.matrix(mat))
+    mat = as.matrix(mat)
+  if (axis){
+    return (dim(mat)[axis])
+  }
+  return (t(dim(mat)))
+}
+
+# r stands for row vector
+R <- function(...){
+  return (t(c(...)))
+}
+
+C <- function(...){
+  return (as.matrix(c(...)))
+}
+
+norm <- function(mat){
+  # check for one dimension matrix only?
+  sqrt(sum(mat^2))
+}
+# 
+# perm = function(n, x) {
+#   return(factorial(n) / factorial(n-x))
+# }
+
+nchoosek = function(n, x) {
+  if (is.atomic(n))
+    return(factorial(n) / (factorial(x) * factorial(n-x)))
+  else {
+    # n is a set.. R contains a function that emulates the behaviour of nchoosek
+    return (t(combn(n, x)))
+  }
 }
