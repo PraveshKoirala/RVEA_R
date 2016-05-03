@@ -3,9 +3,10 @@
 MAIN <- function(Problem, M, Run){
   #clc;
   # format compact;tic){
-  
   #basic settings
-  list[Generations,N,p1,p2] <- P_settings('RVEA',Problem,M)
+  list[Generations,N,P] <- P_settings('RVEA',Problem,M)
+  p1 <- P[1]; p2 <- P[2]
+
   Evaluations <- Generations*N  # max number of fitness evaluations
   alpha <- 2.0  # the parameter in APD, the bigger, the faster RVEA converges
   fr <- 0.1 # frequency to call reference vector

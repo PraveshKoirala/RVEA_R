@@ -1,5 +1,6 @@
 #return randomly mathced mating pool
 # function [MatingPool] <- F_mating(Population)
+# Checked !!
 F_mating <- function(Population){
     ND <- size(Population)
     N <- ND[1]

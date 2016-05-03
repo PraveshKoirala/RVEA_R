@@ -23,7 +23,7 @@ Start <- function (Algorithm,Problem,Objectives,Run) {
             }
             for (P in Problem){
                 for (M in Objectives){
-                    MAIN(data.matrix(P),M,R)
+                    MAIN(as.matrix(P),M,R)
                 }
             }
         }

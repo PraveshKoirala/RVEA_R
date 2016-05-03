@@ -28,7 +28,7 @@ Main <- function (){
           for (Run in 1:RunNum){
               Algorithm <- c('RVEA')
               Problem <- Problems[Prob]
-              Start (Algorithm, Problem, data.matrix(Objectives), Run)
+              Start (Algorithm, Problem, as.matrix(Objectives), Run)
           }
       }
   }

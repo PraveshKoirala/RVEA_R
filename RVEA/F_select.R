@@ -1,5 +1,6 @@
 # The selection function in RVEA
 #function [Selection] = F_select(FunctionValue, V, theta0, refV)
+# Completed!
 F_select <- function(FunctionValue, V, theta0, refV){
 
 NM <- size(FunctionValue)
@@ -23,30 +24,33 @@ uFunctionValue <- FunctionValue / repmat(sqrt(Sum(FunctionValue^2,2)), R(1, M) )
 # Matrix multiplication
 cosine <- uFunctionValue %*% t(V) #calculate the cosine values between each solution and each vector
 acosine <- acos(cosine)
-
-[maxc maxcidx] <- max(cosine, [], 2)
-class <- struct('c', cell(1,VN)) #classification
+# call max with argument to give index too..
+list[maxc, maxcidx] <- Max(cosine, 2, T)
+class <- data.frame(c = rep(NA, VN)) #classification
 for (i in 1:N){
-    class(maxcidx(i)).c <- [class(maxcidx(i)).c, i]
+    # empty at first
+    if (is.na(class[maxcidx(i), 'c']))
+      class[maxcidx(i), 'c'] <- R(i)
+    else # append
+      class[maxcidx(i), 'c'] <- R(class[maxcidx(i), 'c'], i)
 }
 
-Selection <- []
+Selection <- NULL
 for (k in 1:VN){
-    if (!isempty(class(k).c)){
+    if (!is.na(class[k, 'c'])){
         sub <- class(k).c
-        subFunctionValue <- FunctionValue(sub,:)
+        subFunctionValue <- FunctionValue[sub,]
 
         #APD calculation
         subacosine <- acosine(sub, k)
         subacosine <- subacosine/refV(k)# angle normalization
-        D1 <- sqrt(sum(subFunctionValue.^2,2))# Euclidean distance from solution to the ideal point
-        D <- D1.*(1 + (theta0)*(subacosine))# APD
+        D1 <- sqrt(sum(subFunctionValue^2,2))# Euclidean distance from solution to the ideal point
+        D <- D1*(1 + (theta0)%*%(subacosine))# APD
 
-        [mind mindidx] <- min(D)
-        Selection <- [Selection; sub(mindidx)]
+        list[mind, mindidx] <- Min(D, 0, T)
+        Selection <- C(Selection, sub(mindidx))
     }
 }
-
 	return(Selection)
 }
 

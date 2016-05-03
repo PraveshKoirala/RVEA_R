@@ -1,18 +1,18 @@
+# Checked!
 P_settings <- function(Algorithm,Problem,M){
     List[Generations,N] <- set_problem(Problem,M)
     Parameter <- set_algorithm(Algorithm,Problem,M)
-    varargout <- data.matrix(Parameter)
+    varargout <- Parameter
 	return (list(Generations,N,varargout))
 }
-
-rfind <- function(x) seq(along=x)[x != 0]
 
 set_problem <- function(Problem,M){
     # find last index that's not the digit.. probably can be optimized a lot.
     k <- find_last_alphabet_index(Problem)
     
-    D <- as.numeric(Problem[k+1:length(Problem)])
-    Problem <- Problem[1:k]
+    D <- as.numeric(substr(Problem, k+1, length(Problem)))
+
+    Problem <- substr(Problem,1,k)
     if (Problem == "DTLZ" || Problem == "SDTLZ"){
         if (M < 2 || M > 10){
             error('Objective Number Not Supported !')
@@ -20,7 +20,7 @@ set_problem <- function(Problem,M){
         if (D < 1 || D > 7){
             stop(Problem,' Not Exist')
         }
-        Generations <- c(1000, 500, 1000, 500)
+        Generations <- R(1000, 500, 1000, 500)
         Generations <- Generations[D]
     }
 
@@ -28,9 +28,9 @@ set_problem <- function(Problem,M){
         stop(Problem,' Does Not Exist')
       }
     
-    N <- c(50, 105, 120, 126, 132, 112, 156, 90, 275)
+    N <- R(50, 105, 120, 126, 132, 112, 156, 90, 275)
     N <- N * (M-1)
-	  return(list(Generations,N))
+	return(list(Generations,N))
 }
 
 set_algorithm <- function(Algorithm,Problem,M){
@@ -39,11 +39,11 @@ set_algorithm <- function(Algorithm,Problem,M){
     # find last index that's not the digit.. probably can be optimized a lot.
     k <- find_last_alphabet_index(Problem)
     
-    D <- as.numeric(Problem[k+1:length(Problem)])
-    Problem <- Problem[1:k]
+    D <- as.numeric(substr(Problem, k+1, length(Problem)))
+    Problem <- substr(Problem, 1, k)
     if (Algorithm == 'RVEA'){
-            p1 <- c(49, 13,  7,  5,  4,  3,  3,  2,  3)
-            p2 <- c(0,  0,  0,  0,  1,  2,  2,  2,  2)
+            p1 <- R(49, 13,  7,  5,  4,  3,  3,  2,  3)
+            p2 <- R(0,  0,  0,  0,  1,  2,  2,  2,  2)
             p1 <- p1[M-1]
             p2 <- p2[M-1]
                      

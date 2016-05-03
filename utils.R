@@ -10,6 +10,8 @@ sourceall <- function(directory){
 
 printf <- function(...) invisible(print(sprintf(...)))
 
+rfind <- function(x) seq(along=x)[x != 0]
+
 rand <- function(row, col){
   matrix(runif(row*col), row)
 }
@@ -83,28 +85,31 @@ Sum <- function(mat, axis){
     
 }
 
-Min <- function(mat, axis){
+MinMax <- function(FUNCTION, WHICH_FUNCTION, mat, axis, which){
   if (!is.matrix(mat)){
     stop("Must be matrix")
   }
-  if (axis == 2)
-    as.matrix(apply(FUN = min, mat, MARGIN = 1))
-  else if (axis == 1)
-    t(apply(FUN = min, mat, MARGIN = 2))
+  if (axis == 2){
+    value <- as.matrix(apply(FUN = FUNCTION, mat, MARGIN = 1))
+    index <- as.matrix(apply(FUN = WHICH_FUNCTION, mat, MARGIN=1))
+  }
+  else if (axis == 1){
+    value <- t(apply(FUN = FUNCTION, mat, MARGIN = 2))
+    index <- t(apply(FUN = WHICH_FUNCTION, mat, MARGIN = 2))
+  }
   else
     stop("This operation not supported")
+  if (which)
+    return (list(value, index))
+  return(value)
 }
 
-Max <- function(mat, axis){
-  if (!is.matrix(mat)){
-    stop("Must be matrix")
-  }
-  if (axis == 2)
-    as.matrix(apply(FUN = max, mat, MARGIN = 1))
-  else if (axis == 1)
-    t(apply(FUN = max, mat, MARGIN = 2))
-  else
-    stop("This operation not supported")
+Min <- function(mat, axis, which=F){
+  return (MinMax(FUNCTION = min, WHICH_FUNCTION = which.min, mat = mat, axis= axis, which = which))
+}
+
+Max <- function(mat, axis, which=F){
+  return (MinMax(FUNCTION = max, WHICH_FUNCTION = which.max, mat = mat, axis= axis, which = which))
 }
 
 zeros <- function(M, N=0){
