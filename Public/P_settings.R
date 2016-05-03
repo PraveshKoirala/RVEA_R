@@ -18,7 +18,7 @@ set_problem <- function(Problem,M){
             error('Objective Number Not Supported !')
         }
         if (D < 1 || D > 7){
-            stop(Problem,' Not Exist')
+            stop(Problem,' Does Not Exist')
         }
         Generations <- R(1000, 500, 1000, 500)
         Generations <- Generations[D]

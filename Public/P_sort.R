@@ -1,3 +1,4 @@
+# checked!
 P_sort <- function(FunctionValue, operation = ""){
 
 # Efficient non-dominated sort on sequential search strategy, TEVC, 2014,
@@ -13,17 +14,17 @@ P_sort <- function(FunctionValue, operation = ""){
         kinds <- 1
     }
 
-    NM <- dim(FunctionValue)
+    NM <- size(FunctionValue)
     N <- NM[1]; M <- NM[2]
     MaxFront <- 0
-    Sorted <- rep(0,N)
+    Sorted <- zeros(1,N)
     
-    List[FunctionValue,rank] <- sortrows(FunctionValue)
-    FrontValue <- rep(0,N) + Inf
+    list[FunctionValue,rank] <- sortrows(FunctionValue)
+    FrontValue <- zeros(1,N) + Inf
     
     while ((kinds == 1 && sum(Sorted)<N) || (kinds == 2 && sum(Sorted)<N/2) || (kinds == 3 && MaxFront<1)){
         MaxFront <- MaxFront + 1
-        ThisFront <- rep(0,N)
+        ThisFront <- zeros(1, N)
         for (i in 1:N){
             if (!Sorted[i]){
                 x <- 0
@@ -42,11 +43,12 @@ P_sort <- function(FunctionValue, operation = ""){
                     }
                 }
                 if (x != 2){
-                    ThisFront[i] <- true
-                    Sorted[i] <- true
+                    ThisFront[i] <- T
+                    Sorted[i] <- T
                 }
             }
         }
+        # Potentially problematic?
         index <- 1 * (1 %in% ThisFront)
         FrontValue[index] <- MaxFront
     }

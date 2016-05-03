@@ -1,6 +1,6 @@
 #Function to generate uniformly distributed weight vectors
 # function [N,W] <- F_weight(p1,p2,M)
-# Checked !!
+# Completed !!
 F_weight <- function(p1, p2, M){
     list[N,W] <- T_weight(p1,M)
     if (p2 > 0){

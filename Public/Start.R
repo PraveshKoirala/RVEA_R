@@ -1,3 +1,4 @@
+# checked!
 Start <- function (Algorithm,Problem,Objectives,Run) {
   # Algorithm := List of algorithms e.g. c('RVEA')
   # Problem := A single problem string.. e.g. DTLZ2
