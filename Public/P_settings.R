@@ -1,6 +1,6 @@
 # Checked!
 P_settings <- function(Algorithm,Problem,M){
-    List[Generations,N] <- set_problem(Problem,M)
+    list[Generations,N] <- set_problem(Problem,M)
     Parameter <- set_algorithm(Algorithm,Problem,M)
     varargout <- Parameter
 	return (list(Generations,N,varargout))
@@ -10,7 +10,7 @@ set_problem <- function(Problem,M){
     # find last index that's not the digit.. probably can be optimized a lot.
     k <- find_last_alphabet_index(Problem)
     
-    D <- as.numeric(substr(Problem, k+1, length(Problem)))
+    D <- as.numeric(substr(Problem, k+1, nchar(Problem)))
 
     Problem <- substr(Problem,1,k)
     if (Problem == "DTLZ" || Problem == "SDTLZ"){
@@ -39,7 +39,7 @@ set_algorithm <- function(Algorithm,Problem,M){
     # find last index that's not the digit.. probably can be optimized a lot.
     k <- find_last_alphabet_index(Problem)
     
-    D <- as.numeric(substr(Problem, k+1, length(Problem)))
+    D <- as.numeric(substr(Problem, k+1, nchar(Problem)))
     Problem <- substr(Problem, 1, k)
     if (Algorithm == 'RVEA'){
             p1 <- R(49, 13,  7,  5,  4,  3,  3,  2,  3)

@@ -18,7 +18,9 @@ Start <- function (Algorithm,Problem,Objectives,Run) {
         for (A in Algorithm){
             a <- data.matrix(A)
             if (dir.exists(a)){
-                sourceall(a)
+                # Warning: Enable this while running!
+                # sourceall(a)
+                
             } else {
                 stop(sprintf("Algorithm %s not found", a))
             }

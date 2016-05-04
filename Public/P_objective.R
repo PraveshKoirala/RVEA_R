@@ -23,7 +23,7 @@ P_DTLZ <- function(Operation, Problem, M, Input){
     if (Operation == "init"){
             k <- find_last_alphabet_index(Problem)
             K_DTLZ <<- R(5, 10, 10, 10, 10, 10, 20)
-            K_DTLZ <<- K_DTLZ[as.numeric(substr(Problem, k+1, length(Problem)))]
+            K_DTLZ <<- K_DTLZ[as.numeric(substr(Problem, k+1, nchar(Problem)))]
 
             D <- M+K_DTLZ-1
             MaxValue   <- ones(1, D)
@@ -105,7 +105,7 @@ P_SDTLZ <- function(Output, Boundary, Coding) {
     if (Operation == "init"){
             k <- find_last_alphabet_index(Problem)
             K_SDTLZ <<- R(5, 10, 10, 10, 10, 10, 20)
-            K_SDTLZ <<- K_SDTLZ(as.numeric(substr(Problem, k+1, length(Problem))))
+            K_SDTLZ <<- K_SDTLZ(as.numeric(substr(Problem, k+1, nchar(Problem))))
             F_SDTLZ <<- R(10, 10, 10, 10, 10, 5, 4, 3, 2, 2)
             F_SDTLZ <<- F_SDTLZ[M]
 

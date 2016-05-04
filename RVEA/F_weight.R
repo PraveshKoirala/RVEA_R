@@ -12,7 +12,7 @@ F_weight <- function(p1, p2, M){
 }
 
 # function [N,W] <- T_weight(H,M)
-T_weight <- function(){
+T_weight <- function(H, M){
     N <- nchoosek(H+M-1,M-1)
     Temp <- nchoosek(1:(H+M-1),M-1)-repmat(0:(M-2),nchoosek(H+M-1,M-1),1)-1
     W <- zeros(N,M)
@@ -20,7 +20,7 @@ T_weight <- function(){
     for (i in 2: (M-1)) {
         W[,i] <- Temp[,i]-Temp[,i-1]
     }
-    W[,length(Temp)] <- H-Temp[,length(Temp)]
+    W[,size(Temp, 2)] <- H-Temp[,size(Temp, 2)]
     W <- W/H
     return (list(N, W))
 }

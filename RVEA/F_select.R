@@ -38,7 +38,7 @@ for (i in 1:N){
 Selection <- NULL
 for (k in 1:VN){
     if (!is.na(class[k, 'c'])){
-        sub <- class(k).c
+        sub <- class[k, 'c']
         subFunctionValue <- FunctionValue[sub,]
 
         #APD calculation

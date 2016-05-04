@@ -7,6 +7,5 @@ TODO:
   - Use substr for all strings instead of the slice operator
   - Verify that each corresponding R function exists for the matlab
   - P_objective.R function can have a lot of bugs, verify
-  - Use matrix in all cases.. verify whether row or column vectors are used
-  - Check if there are any matrix multiplications.. and change the operators accordingly.
-  - F_mating is incomplete.. check it out
+  - Change Mat[, length(Mat)] to Mat[, size(Mat, 2)]
+  - Fix the sort function and the sortrows function

@@ -152,9 +152,9 @@ norm <- function(mat){
 # }
 
 nchoosek = function(n, x) {
-  if (is.atomic(n))
+  if (length(n)==1)
     return(factorial(n) / (factorial(x) * factorial(n-x)))
-  else {
+  else if (length(n)>1) {
     # n is a set.. R contains a function that emulates the behaviour of nchoosek
     return (t(combn(n, x)))
   }
