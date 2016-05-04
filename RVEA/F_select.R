@@ -19,7 +19,7 @@ FunctionValue <- (FunctionValue - repmat(Zmin, R(size(FunctionValue,1), 1)) )
 # is this important?
 #### clear class
 
-uFunctionValue <- FunctionValue / repmat(sqrt(Sum(FunctionValue^2,2)), R(1, M) )
+uFunctionValue <- FunctionValue / c(repmat(sqrt(Sum(FunctionValue^2,2)), R(1, M) ))
 
 # Matrix multiplication
 cosine <- uFunctionValue %*% t(V) #calculate the cosine values between each solution and each vector
@@ -29,10 +29,12 @@ list[maxc, maxcidx] <- Max(cosine, 2, T)
 class <- data.frame(c = rep(NA, VN)) #classification
 for (i in 1:N){
     # empty at first
-    if (is.na(class[maxcidx(i), 'c']))
-      class[maxcidx(i), 'c'] <- R(i)
-    else # append
-      class[maxcidx(i), 'c'] <- R(class[maxcidx(i), 'c'], i)
+    if (is.na(class[maxcidx[[i]], 'c'])){
+      class[maxcidx[[i]], 'c'] <- R(i)
+    }
+    else { # append
+      class[maxcidx[[i]], 'c'] <- R(class[maxcidx[[i]], 'c'], i)
+    }
 }
 
 Selection <- NULL

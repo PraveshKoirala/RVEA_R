@@ -24,17 +24,17 @@ MAIN <- function(Problem, M, Run){
   
   #calculat neighboring angle for angle normalization
   cosineVV <- V %*% t(V)
-  list[scosineVV, neighbor] <- sort(cosineVV, 2, 'descend')
-  acosVV <- acos(scosineVV[,2])
+  list[scosineVV, neighbor] <- Sort_descend(cosineVV)
+  acosVV <- acos(scosineVV[,2][[1]])
   refV <- (acosVV)
   
   #population initialization
-  set.seed()
+  set.seed(2)
   # rand('seed', sum(100 * clock))
   
   list[Population,Boundary,Coding] <- P_objective('init',Problem,M,N)
   
-  FunctionValue <- P_objective('value',Problem,M,Population)
+  list[FunctionValue,,] <- P_objective('value',Problem,M,Population)
   
   for (Gene in 0 : (Generations - 1) ){
       #random mating and reproduction
@@ -44,7 +44,8 @@ MAIN <- function(Problem, M, Run){
       FE <- FE + size(Offspring, 1)
       
       Population <- C(Population, Offspring)
-      FunctionValue <- C(FunctionValue, P_objective('value',Problem,M,Offspring))
+      list[val,,] <- P_objective('value',Problem,M,Offspring)
+      FunctionValue <- C(FunctionValue, val)
   
       #APD based selection
       theta0 <-  (Gene/(Generations))^alpha*(M)
@@ -64,8 +65,8 @@ MAIN <- function(Problem, M, Run){
           }
           #update the neighborning angle value for angle normalization
           cosineVV <- V*t(V)
-          list[scosineVV, neighbor] <- sort(cosineVV, 2, 'descending')
-          acosVV <- acos(scosineVV[,2])
+          list[scosineVV, neighbor] <- Sort_descend(cosineVV)
+          acosVV <- acos(scosineVV[,2][[1]])
           refV <- (acosVV)
       }
   

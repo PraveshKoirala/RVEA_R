@@ -18,9 +18,10 @@ rand <- function(row, col){
 
 # see this at http://haky-functions.blogspot.com/2006/11/repmat-function-matlab.html
 repmat <- function(X,m,n=1){
-  if (is.matrix(m)){
-    n <- m[1, 2]
-    m <- m[1, 1]
+  dim(m) <- NULL
+  if (length(m)>1){
+      n <- m[2]
+      m <- m[1]
   }
   
   if (!is.matrix(X)){
@@ -49,14 +50,14 @@ find_first_string <- function(Problem){
 
 rowProd <- function(mat){
   if (!is.matrix(mat)){
-    stop("Must be matrix")
+    mat <- R(mat)
   }
-  as.matrix(apply(FUN = prod, mat, MARGIN = 1))
+  r<-as.matrix(apply(FUN = prod, mat, MARGIN = 1))
 }
 
 colProd <- function(mat){
   if (!is.matrix(mat)){
-    stop("Must be matrix")
+    mat <- R(mat)
   }
   t(apply(FUN = prod, mat, MARGIN = 2))
 }
@@ -74,7 +75,7 @@ Prod <- function(mat, axis){
 
 Sum <- function(mat, axis){
   if (!is.matrix(mat)){
-    stop("Must be matrix")
+    mat <- R(mat)
   }
   if (axis == 2)
     as.matrix(apply(FUN = prod, mat, MARGIN = 1))
@@ -87,15 +88,15 @@ Sum <- function(mat, axis){
 
 MinMax <- function(FUNCTION, WHICH_FUNCTION, mat, axis, which){
   if (!is.matrix(mat)){
-    stop("Must be matrix")
+    mat <- R(mat)
   }
   if (axis == 2){
-    value <- as.matrix(apply(FUN = FUNCTION, mat, MARGIN = 1))
-    index <- as.matrix(apply(FUN = WHICH_FUNCTION, mat, MARGIN=1))
+    value <- as.matrix(apply(FUN = FUNCTION, X=mat, MARGIN = 1))
+    index <- as.matrix(apply(FUN = WHICH_FUNCTION, X=mat, MARGIN=1))
   }
   else if (axis == 1){
-    value <- t(apply(FUN = FUNCTION, mat, MARGIN = 2))
-    index <- t(apply(FUN = WHICH_FUNCTION, mat, MARGIN = 2))
+    value <- t(apply(FUN = FUNCTION, X=mat, MARGIN = 2))
+    index <- t(apply(FUN = WHICH_FUNCTION, X=mat, MARGIN = 2))
   }
   else
     stop("This operation not supported")
@@ -126,7 +127,7 @@ ones <- function(M, N= 0){
 
 size <- function(mat, axis = 0){
   if (!is.matrix(mat))
-    mat = as.matrix(mat)
+    mat = R(mat)
   if (axis){
     return (dim(mat)[axis])
   }
@@ -135,10 +136,16 @@ size <- function(mat, axis = 0){
 
 # r stands for row vector
 R <- function(...){
+  if ( is.matrix(list(...)[[1]]) ){
+    return (cbind(...))
+  }
   return (t(c(...)))
 }
 
 C <- function(...){
+  if ( is.matrix(list(...)[[1]]) ){
+    return (rbind(...))
+  }
   return (as.matrix(c(...)))
 }
 
@@ -160,6 +167,18 @@ nchoosek = function(n, x) {
   }
 }
 
+Sort_descend <- function(mat){
+  sorted_mat <- apply(mat, 1, sort, decreasing=T, index.return=T)
+  value <- lapply(sorted_mat, function(x){x$x})
+  index <- lapply(sorted_mat, function(x){x$ix})
+  list(t(value), t(index))
+}
+
+Sortrows <- function(mat){
+  list[,index] <- sort(mat[, 1], index.return=T)
+  list(mat[index,], C(index))
+}
+
 # to return multiple values, we require this hack
 
 list <- structure(NA,class="result")
@@ -173,3 +192,6 @@ list <- structure(NA,class="result")
   }
   x
 }
+
+# disable drop by default.. 
+`[` <- function(...) base::`[`(...,drop=FALSE)
