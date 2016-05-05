@@ -3,6 +3,13 @@
 # Completed!
 F_select <- function(FunctionValue, V, theta0, refV){
 
+  # disable this entire segment
+#   values <- readMat("function_value.mat")
+#   FunctionValue <- values$FunctionValue
+#   V <- values$V
+#   theta0 <- values$theta0
+#   refV <- values$refV
+  
 NM <- size(FunctionValue)
 N <- NM[1]
 M <- NM[2]
@@ -27,31 +34,40 @@ cosine <- uFunctionValue %*% t(V) #calculate the cosine values between each solu
 acosine <- acos(cosine)
 # call max with argument to give index too..
 list[maxc, maxcidx] <- Max(cosine, 2, T)
-class <- data.frame(c = rep(NA, VN)) #classification
+
+# class <- data.frame(c = rep(NA, VN)) #classification
+class <- as.list(rep(NA, VN))
+
 for (i in 1:N){
     # empty at first
-    if (is.na(class[maxcidx[[i]], 'c'])){
-      class[maxcidx[[i]], 'c'] <- R(i)
+#     if (is.na(class[maxcidx[[i]], 'c'])){
+#       class[maxcidx[[i]], 'c'] <- R(i)
+#     }
+#     else { # append
+#       class[maxcidx[[i]], 'c'] <- R(class[maxcidx[[i]], 'c'], i)
+#     }
+    if (is.na(class[maxcidx[i]])){
+      class[maxcidx[i]] <- i
     }
-    else { # append
-      class[maxcidx[[i]], 'c'] <- R(class[maxcidx[[i]], 'c'], i)
-    }
+  else {
+    class[[maxcidx[i]]] <- c(class[[maxcidx[i]]], i)
+  }
 }
 
 Selection <- NULL
 for (k in 1:VN){
-    if (!is.na(class[k, 'c'])){
-        sub <- class[k, 'c']
+    if (!is.na(class[k])){
+        sub <- class[[k]]
         subFunctionValue <- FunctionValue[sub,]
 
         #APD calculation
-        subacosine <- acosine(sub, k)
-        subacosine <- subacosine/refV(k)# angle normalization
-        D1 <- sqrt(sum(subFunctionValue^2,2))# Euclidean distance from solution to the ideal point
-        D <- D1*(1 + (theta0)%*%(subacosine))# APD
+        subacosine <- acosine[sub, k]
+        subacosine <- subacosine/refV[k]# angle normalization
+        D1 <- sqrt(Sum(subFunctionValue^2,2))# Euclidean distance from solution to the ideal point
+        D <- D1*(1 + theta0[1]*(subacosine))# APD
 
-        list[mind, mindidx] <- Min(D, 0, T)
-        Selection <- C(Selection, sub(mindidx))
+        list[mind, mindidx] <- Min(D, 1, T)
+        Selection <- C(Selection, sub[mindidx])
     }
 }
 	return(Selection)

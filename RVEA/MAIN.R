@@ -16,10 +16,19 @@ MAIN <- function(Problem, M, Run){
   
   #reference vector initialization
   list[N,Vs] <- F_weight(p1,p2,M)
+  
+  # disable this too
+  
+  
   for (i in 1:N){
     Vs[i,] <- Vs[i,]/norm(Vs[i,])
   }
   V <- Vs
+  
+  # disable this
+  Vs <- readMat("V.mat")$Vs
+  V <- Vs
+  
   Generations <- floor(Evaluations/N)
   
   #calculat neighboring angle for angle normalization
@@ -33,18 +42,21 @@ MAIN <- function(Problem, M, Run){
   # rand('seed', sum(100 * clock))
   
   list[Population,Boundary,Coding] <- P_objective('init',Problem,M,N)
-  
   list[FunctionValue,,] <- P_objective('value',Problem,M,Population)
   
-  # disable this.. 
-  # FunctionValue <- readMat("function_value.mat")$FunctionValue
-  
+  # Disable this entire block
+  Population <- readMat("function_value.mat")$Population
+  FunctionValue <- readMat("function_value.mat")$FunctionValue
   
   for (Gene in 0 : (Generations - 1) ){
     #random mating and reproduction
     MatingPool <- F_mating(Population)
     
     Offspring <- P_generator(MatingPool,Boundary,Coding,N);  
+    
+    # disable this.. 
+    Offspring <- readMat("offspring.mat")$Offspring
+    
     FE <- FE + size(Offspring, 1)
     
     Population <- C(Population, Offspring)

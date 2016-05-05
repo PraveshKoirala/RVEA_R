@@ -1,7 +1,7 @@
 # checked!
 P_generator <- function(MatingPool,Boundary,Coding,MaxOffspring = 0){
 # This function includes the SBX crossover operator and the polynomial
-# mutatoion operator.
+# mutation operator.
 
     ND <- size(MatingPool)
     N <- ND[1]
