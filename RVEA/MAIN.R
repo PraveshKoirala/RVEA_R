@@ -27,7 +27,7 @@ MAIN <- function(Problem, M, Run){
   
   # disable this
   Vs <- readMat("V.mat")$Vs
-  V <- Vs
+  V <- readMat("V.mat")$Vs
   
   Generations <- floor(Evaluations/N)
   
@@ -80,13 +80,13 @@ MAIN <- function(Problem, M, Run){
         V[i,] <- V[i,] / norm(V[i,])
       }
       #update the neighborning angle value for angle normalization
-      cosineVV <- V*t(V)
+      cosineVV <- V%*%t(V)
       list[scosineVV, neighbor] <- Sort_descend(cosineVV)
-      acosVV <- acos(scosineVV[,2][[1]])
+      acosVV <- acos(scosineVV[,2])
       refV <- (acosVV)
     }
     
-    printf('Progress#4s##\n',num2str(roundn(Gene/Generations*100,-1)));
+    printf('Progress#4s##\n',as.character(Gene/Generations*100));
     
   }
   P_output(Population,toc,'RVEA',Problem,M,Run)

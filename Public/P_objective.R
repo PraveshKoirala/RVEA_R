@@ -51,10 +51,13 @@ P_DTLZ <- function(Operation, Problem, M, Input){
             else if (Problem == 'DTLZ2'){
                   g <- Sum((Population[,M:size(Population, 2)]-0.5)^2, 2)
                   for (i in 1 : M){
+                    if ((M-i) == 0) 
+                      FunctionValue[,i] <- (1+g)
+                    else
                       FunctionValue[,i] <- (1+g)*Prod(cos(0.5*pi*Population[,1:(M-i)]), 2)
-                      if (i > 1){
-                          FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*Population[,M-i+1])
-                      }
+                    if (i > 1){
+                        FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*Population[,M-i+1])
+                    }
                   }
             }
             else if (Problem == 'DTLZ3'){
