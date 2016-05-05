@@ -29,7 +29,7 @@ set_problem <- function(Problem,M){
       }
     
     N <- R(50, 105, 120, 126, 132, 112, 156, 90, 275)
-    N <- N * (M-1)
+    N <- N[M-1]
 	return(list(Generations,N))
 }
 

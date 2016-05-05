@@ -5,7 +5,7 @@ F_select <- function(FunctionValue, V, theta0, refV){
 
 NM <- size(FunctionValue)
 N <- NM[1]
-M <- NM[0]
+M <- NM[2]
 VN <- size(V, 1)
 
 # custom util function..
@@ -19,7 +19,8 @@ FunctionValue <- (FunctionValue - repmat(Zmin, R(size(FunctionValue,1), 1)) )
 # is this important?
 #### clear class
 
-uFunctionValue <- FunctionValue / c(repmat(sqrt(Sum(FunctionValue^2,2)), R(1, M) ))
+div <- repmat(sqrt(Sum(FunctionValue^2,2)), R(1, M))
+uFunctionValue <- FunctionValue / div
 
 # Matrix multiplication
 cosine <- uFunctionValue %*% t(V) #calculate the cosine values between each solution and each vector

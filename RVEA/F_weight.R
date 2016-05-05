@@ -20,7 +20,7 @@ T_weight <- function(H, M){
     for (i in 2: (M-1)) {
         W[,i] <- Temp[,i]-Temp[,i-1]
     }
-    W[,size(Temp, 2)] <- H-Temp[,size(Temp, 2)]
+    W[,size(W, 2)] <- H-Temp[,size(Temp, 2)]
     W <- W/H
     return (list(N, W))
 }

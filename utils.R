@@ -78,9 +78,9 @@ Sum <- function(mat, axis){
     mat <- R(mat)
   }
   if (axis == 2)
-    as.matrix(apply(FUN = prod, mat, MARGIN = 1))
+    as.matrix(apply(FUN = sum, mat, MARGIN = 1))
   else if (axis == 1)
-    t(apply(FUN = prod, mat, MARGIN = 2))
+    t(apply(FUN = sum, mat, MARGIN = 2))
   else
     stop("This sum not supported")
     
@@ -91,11 +91,11 @@ MinMax <- function(FUNCTION, WHICH_FUNCTION, mat, axis, which){
     mat <- R(mat)
   }
   if (axis == 2){
-    value <- as.matrix(apply(FUN = FUNCTION, X=mat, MARGIN = 1))
+    value <- as.matrix(apply(FUN = FUNCTION, X=mat, MARGIN = 1, na.rm=T))
     index <- as.matrix(apply(FUN = WHICH_FUNCTION, X=mat, MARGIN=1))
   }
   else if (axis == 1){
-    value <- t(apply(FUN = FUNCTION, X=mat, MARGIN = 2))
+    value <- t(apply(FUN = FUNCTION, X=mat, MARGIN = 2, na.rm=T))
     index <- t(apply(FUN = WHICH_FUNCTION, X=mat, MARGIN = 2))
   }
   else
@@ -169,9 +169,9 @@ nchoosek = function(n, x) {
 
 Sort_descend <- function(mat){
   sorted_mat <- apply(mat, 1, sort, decreasing=T, index.return=T)
-  value <- lapply(sorted_mat, function(x){x$x})
-  index <- lapply(sorted_mat, function(x){x$ix})
-  list(t(value), t(index))
+  value <- do.call('rbind', lapply(sorted_mat, function(x){x$x}))
+  index <- do.call('rbind', lapply(sorted_mat, function(x){x$ix}))
+  list(value, index)
 }
 
 Sortrows <- function(mat){
