@@ -1,14 +1,16 @@
 P_output <- function (Population,time,Algorithm,Problem,M,Run){
   # P_objective is defined in P_objective.R
-  FunctionValue <- P_objective('value', Problem, M, Population)
+  list[FunctionValue,,] <- P_objective('value', Problem, M, Population)
   if (Algorithm == 'cRVEA'){
       #FunctionValue = FunctionValue(:,1:end - 1);
       # All except the last column
       FunctionValue <- FunctionValue[, -ncol(FunctionValue)]
   }
-  TrueValue <- P_objective('true',Problem,M,1000)
+  list[TrueValue,,] <- P_objective('true',Problem,M,1000)
   
-  NonDominated  <- (P_sort(FunctionValue, 'first') == 1)
+  list[FrontValue,] <- P_sort(FunctionValue, 'first')
+  NonDominated  <- (FrontValue == 1)
+  
   Population    <- Population[NonDominated,]
   FunctionValue <- FunctionValue[NonDominated,]
   

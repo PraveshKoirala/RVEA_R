@@ -84,10 +84,9 @@ MAIN <- function(Problem, M, Run){
       refV <- (acosVV)
     }
     
-    printf('Progress %4s',as.character(Gene/Generations*100));
+    # printf('Progress %4s',as.character(Gene/Generations*100));
     
   }
-  print(Population)
   P_output(Population,toc,'RVEA',Problem,M,Run)
 }
 

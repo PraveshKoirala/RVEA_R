@@ -24,7 +24,7 @@ P_sort <- function(FunctionValue, operation = ""){
     
     while ((kinds == 1 && sum(Sorted)<N) || (kinds == 2 && sum(Sorted)<N/2) || (kinds == 3 && MaxFront<1)){
         MaxFront <- MaxFront + 1
-        ThisFront <- zeros(1, N)
+        ThisFront <- as.logical(zeros(1, N))
         for (i in 1:N){
             if (!Sorted[i]){
                 x <- 0
@@ -49,8 +49,8 @@ P_sort <- function(FunctionValue, operation = ""){
             }
         }
         # Potentially problematic?
-        index <- 1 * (1 %in% ThisFront)
-        FrontValue[index] <- MaxFront
+        # index <- 1 * (1 %in% ThisFront)
+        FrontValue[rank[ThisFront]] <- MaxFront
     }
 	return(list(FrontValue,MaxFront))
 }
