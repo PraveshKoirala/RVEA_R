@@ -4,6 +4,3 @@ This is a port of the RVEA (reference vector guided evolutionary algorithm) for 
 
 
 Start with the Main.R file.. it contains an example.
-
-TODO:
-  - Verify the results

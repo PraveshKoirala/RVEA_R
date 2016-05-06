@@ -41,6 +41,8 @@ Main <- function(){
       }
     }
     FunctionValue
+    
+    # if you have functions f1, f2, f3.. just return them as R(f1, f2, f3)
   }
   
   # reference vector
