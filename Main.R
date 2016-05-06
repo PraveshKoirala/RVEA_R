@@ -16,24 +16,6 @@
 source("utils.R")
 sourceall("Public")
 sourceall("RVEA")
-# 
-# Main <- function (){
-#   RunNum <- 1
-#   
-#   #Problems = c('DTLZ1','DTLZ2','DTLZ3','DTLZ4');
-#   #Problems = c('SDTLZ1','SDTLZ2','SDTLZ3','SDTLZ4');
-#   Problems <- c('DTLZ2')
-#   
-#   for (Prob in 1:length(Problems)){
-#       for (Objectives in c(3)){
-#           for (Run in 1:RunNum){
-#               Algorithm <- c('RVEA')
-#               Problem <- Problems[Prob]
-#               Start (Algorithm, Problem, as.matrix(Objectives), Run)
-#           }
-#       }
-#   }
-# }
 
 Main <- function(){
   
@@ -45,29 +27,38 @@ Main <- function(){
     # change as necessary
     
     FunctionValue <- zeros(1,M)
-    g <- sum((Population[,M:size(x, 2)]-0.5)^2)
+    g <- sum((x[M:length(x)]-0.5)^2)
     for (i in 1 : M){
       if ((M-i) == 0) 
         FunctionValue[,i] <- (1+g)
       else
-        FunctionValue[,i] <- (1+g)*prod(cos(0.5*pi*x[,1:(M-i)]))
+        FunctionValue[,i] <- (1+g)*prod(cos(0.5*pi*x[1:(M-i)]))
       if (i > 1){
-        FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*x[,M-i+1])
+        FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*x[M-i+1])
       }
     }
     FunctionValue
   }
   
   # reference vector
-  p1 = 7
+  p1 = 13
   p2 = 0
-  lbound= R(0, 0,0)
-  ubound = R(1,1,1)
-  Generations <- 500
-  N <- 120
   K <- 10
+  lbound= zeros(1, M+K-1)
+  ubound = ones(1,M+K-1)
+  Generations <- 500
+  N <- 105
   
-  output <- rvea(objective = dtlz2, M, K, N, p1, p2, lbound, ubound)
+  output <- rvea(objective = dtlz2, Generations = Generations, M = M, K = K, N=N, p1=p1, 
+                 p2=p2, lbound=lbound, ubound=ubound, rand_seed = 3)
   
+  population <- output$population  # population after the iteration is complete
+  functionvalue <- output$functionvalue
+  num_solutions <- output$num_solutions
+  
+  # if you only want 10 solutions.. do this
+  S <- sample(num_solutions, 10)
+  P_s <- population[S,]
+  F_s <- functionvalue[S,]
   
 }

@@ -43,10 +43,10 @@ rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound,
   # initialize population
   lbound <- R(lbound); ubound <- R(ubound)
   Boundary <- C(ubound, lbound)
-  Coding <- Real
+  Coding <- "Real"
   D <- M+K-1
-  Population <- rand(Input,D)
-  Population <- Population*repmat(ubound,N,1)+(1-Population)*repmat(rbound,N,1)
+  Population <- rand(N,D)
+  Population <- Population*repmat(ubound,N,1)+(1-Population)*repmat(lbound,N,1)
   # list[Population,Boundary,Coding] <- P_objective('init',Problem,M,N)
   # list[FunctionValue,,] <- P_objective('value',Problem,M,Population)
   FunctionValue <- P_evaluate(objective, Population)
