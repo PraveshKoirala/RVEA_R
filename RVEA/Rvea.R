@@ -9,8 +9,17 @@ P_evaluate <- function(objective, Population){
 }
 
 rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound, 
-                 alpha=2, fr=0.1, FE=0){
+                 optimize_func, alpha=2, fr=0.1, FE=0){
   
+  if (is.null(optimize_func)){
+    stop("Optimization function not specified")
+  }
+  else if (optimize_func == "min"){
+    optimize_func <- Min
+  }
+  else if (optimize_func == "max"){
+    optimize_func <- Max
+  }
   
   Evaluations <- Generations*N  # max number of fitness evaluations
   
@@ -58,7 +67,7 @@ rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound,
     
     #APD based selection
     theta0 <-  (Gene/(Generations))^alpha*(M)
-    Selection <- F_select(FunctionValue,V, theta0, refV)
+    Selection <- F_select(FunctionValue,V, theta0, refV, optimize_func)
     Population <- Population[Selection,]
     FunctionValue <- FunctionValue[Selection,]
     
@@ -80,9 +89,10 @@ rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound,
       list[scosineVV, neighbor] <- Sort_descend(cosineVV)
       acosVV <- acos(scosineVV[,2])
       refV <- (acosVV)
+      printf('Progress %4s%%',as.character(Gene/Generations*100));
     }
     
-    # printf('Progress %4s',as.character(Gene/Generations*100));
+    
     
   }
   

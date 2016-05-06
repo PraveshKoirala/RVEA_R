@@ -58,7 +58,7 @@ Main <- function(){
   N <- 105  # npop
   
   output <- rvea(objective = dtlz2, Generations = Generations, M = M, K = K, N=N, p1=p1, 
-                 p2=p2, lbound=lbound, ubound=ubound)
+                 p2=p2, lbound=lbound, ubound=ubound, optimize_func="min")
   
   total_population <- output$total_population  # npop + ngen*npop
   
