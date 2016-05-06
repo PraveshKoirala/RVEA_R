@@ -42,6 +42,9 @@ P_DTLZ <- function(Operation, Problem, M, Input){
             if (Problem == "DTLZ1") {
                   g <- 100*(K_DTLZ+Sum((Population[,M:size(Population, 2)]-0.5)^2-cos(20*pi*(Population[,M:size(Population, 2)]-0.5)), 2))
                   for (i in 1 : M){
+                    if ((M-i) == 0) 
+                      FunctionValue[,i] <- (1+g)
+                    else
                       FunctionValue[,i] <- 0.5*Prod(Population[,1:(M-i)], 2)*(1+g)
                       if (i > 1){
                           FunctionValue[,i] <- FunctionValue[,i]*(1-Population[,M-i+1])
@@ -63,6 +66,9 @@ P_DTLZ <- function(Operation, Problem, M, Input){
             else if (Problem == 'DTLZ3'){
                   g <- 100*(K_DTLZ+Sum((Population[,M:size(Population, 2)]-0.5)^2-cos(20*pi*(Population[,M:size(Population, 2)]-0.5)), 2))
                   for (i in 1 : M){
+                    if ((M-i) == 0) 
+                      FunctionValue[,i] <- (1+g)
+                    else
                       FunctionValue[,i] <- (1+g)*Prod(cos(0.5*pi*Population[,1:(M-i)]), 2)
                       if (i > 1){
                           FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*Population[,M-i+1])
@@ -73,6 +79,9 @@ P_DTLZ <- function(Operation, Problem, M, Input){
                   Population[,1:(M-1)] <- Population[,1:(M-1)]^100
                   g <- Sum((Population[,M:size(Population, 2)]-0.5)^2, 2)
                   for (i in 1 : M){
+                    if ((M-i) == 0) 
+                      FunctionValue[,i] <- (1+g)
+                    else
                       FunctionValue[,i] <- (1+g)*Prod(cos(0.5*pi*Population[,1:(M-i)]), 2)
                       if (i > 1){
                           FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*Population[,M-i+1])
@@ -130,6 +139,9 @@ P_SDTLZ <- function(Output, Boundary, Coding) {
         if (Problem == "SDTLZ1"){
                 g <- 100*(K_SDTLZ+Sum((Population[, M:size(Population, 2)]-0.5)^2-cos(20*pi*(Population[,M:size(Population,2)]-0.5)),2))
                 for (i in 1 : M){
+                  if ((M-i) == 0) 
+                    FunctionValue[,i] <- 0.5
+                  else
                     FunctionValue[,i] <- 0.5*Prod(Population[,1:(M-i)],2)*(1+g)
                     if (i > 1){
                         FunctionValue[,i] <- FunctionValue[,i]*(1-Population[,M-i+1])
@@ -139,6 +151,9 @@ P_SDTLZ <- function(Output, Boundary, Coding) {
         if (Problem == "SDTLZ2"){
             g <- Sum((Population[,M:size(Population, 2)]-0.5)^2,2)
             for (i in 1 : M){
+              if ((M-i) == 0) 
+                FunctionValue[,i] <- (1+g)
+              else
                 FunctionValue[,i] <- (1+g)*Prod(cos(0.5*pi*Population[,1:(M-i)]),2)
                 if (i > 1){
                     FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*Population[,M-i+1])
@@ -148,6 +163,9 @@ P_SDTLZ <- function(Output, Boundary, Coding) {
         if (Problem == "SDTLZ3"){
             g <- 100*(K_SDTLZ+Sum((Population[,M:size(Population, 2)]-0.5)^2-cos(20*pi*(Population[,M:size(Population,2)]-0.5)),2))
             for (i in 1 : M){
+              if ((M-i) == 0) 
+                FunctionValue[,i] <- (1+g)
+              else
                 FunctionValue[,i] <- (1+g)*Prod(cos(0.5*pi*Population[,1:(M-i)]),2)
                 if (i > 1){
                     FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*Population[,M-i+1])
@@ -158,6 +176,9 @@ P_SDTLZ <- function(Output, Boundary, Coding) {
                 Population[,1:(M-1)] <- Population[,1:(M-1)]^100
                 g <- Sum((Population[,M:size(Population, 2)]-0.5)^2,2)
                 for (i in 1 : M){
+                  if ((M-i) == 0) 
+                    FunctionValue[,i] <- (1+g)
+                  else
                     FunctionValue[,i] <- (1+g)*Prod(cos(0.5*pi*Population[,1:(M-i)]),2)
                     if (i > 1){
                         FunctionValue[,i] <- FunctionValue[,i]*sin(0.5*pi*Population[,M-i+1])
