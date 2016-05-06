@@ -13,11 +13,14 @@
 ##  https://github.com/ranchengcn/RVEA_Matlab
 ##################################################################################################
 
+# remember to change this address if the path is somewhere other
 source("utils.R")
 sourceall("Public")
 sourceall("RVEA")
 
 Main <- function(){
+  # remove this while using, or change it.. 
+  set.seed(21)
   
   # Number of objectives
   M <- 3
@@ -41,16 +44,28 @@ Main <- function(){
   }
   
   # reference vector
-  p1 = 13
-  p2 = 0
+  p1 <- 13
+  p2 <- 0
+  
+  # num variables?
   K <- 10
+  
+  # bounds on the variables
   lbound= zeros(1, M+K-1)
   ubound = ones(1,M+K-1)
-  Generations <- 500
-  N <- 105
+  
+  Generations <- 500 # generations
+  N <- 105  # npop
   
   output <- rvea(objective = dtlz2, Generations = Generations, M = M, K = K, N=N, p1=p1, 
-                 p2=p2, lbound=lbound, ubound=ubound, rand_seed = 3)
+                 p2=p2, lbound=lbound, ubound=ubound)
+  
+  total_population <- output$total_population  # npop + ngen*npop
+  
+  # entire population and their corresponding values.. stacked upon one another
+  # note that they are not a multiple of npop.. (due to sampling process I guess..)
+  all_population <- output$all_population
+  all_functionvalues <- output$all_functionvalues
   
   population <- output$population  # population after the iteration is complete
   functionvalue <- output$functionvalue

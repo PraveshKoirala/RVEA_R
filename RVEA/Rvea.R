@@ -9,10 +9,8 @@ P_evaluate <- function(objective, Population){
 }
 
 rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound, 
-                 alpha=2, fr=0.1, FE=0, rand_seed=2){
+                 alpha=2, fr=0.1, FE=0){
   
-  # list[Generations,N,P] <- P_settings('RVEA',Problem,M)
-  # p1 <- P[1]; p2 <- P[2]
   
   Evaluations <- Generations*N  # max number of fitness evaluations
   
@@ -25,9 +23,6 @@ rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound,
   }
   V <- Vs
   
-  # disable this
-  #   Vs <- readMat("V.mat")$Vs
-  #   V <- readMat("V.mat")$Vs
   
   Generations <- floor(Evaluations/N)
   
@@ -37,9 +32,6 @@ rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound,
   acosVV <- acos(scosineVV[,2])
   refV <- (acosVV)
   
-  #population initialization
-  set.seed(rand_seed)
-  
   # initialize population
   lbound <- R(lbound); ubound <- R(ubound)
   Boundary <- C(ubound, lbound)
@@ -47,13 +39,10 @@ rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound,
   D <- M+K-1
   Population <- rand(N,D)
   Population <- Population*repmat(ubound,N,1)+(1-Population)*repmat(lbound,N,1)
-  # list[Population,Boundary,Coding] <- P_objective('init',Problem,M,N)
-  # list[FunctionValue,,] <- P_objective('value',Problem,M,Population)
   FunctionValue <- P_evaluate(objective, Population)
   
-  # Disable this entire block
-  #   Population <- readMat("function_value.mat")$Population
-  #   FunctionValue <- readMat("function_value.mat")$FunctionValue
+  all_population <- Population
+  all_functionvalues <- FunctionValue
   
   for (Gene in 0 : (Generations - 1) ){
     #random mating and reproduction
@@ -61,13 +50,9 @@ rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound,
     
     Offspring <- P_generator(MatingPool,Boundary,Coding,N);  
     
-    # disable this.. 
-    # Offspring <- readMat("offspring.mat")$Offspring
-    
     FE <- FE + size(Offspring, 1)
     
     Population <- C(Population, Offspring)
-    # list[val,,] <- P_objective('value',Problem,M,Offspring)
     val <- P_evaluate(objective, Offspring)
     FunctionValue <- C(FunctionValue, val)
     
@@ -76,6 +61,9 @@ rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound,
     Selection <- F_select(FunctionValue,V, theta0, refV)
     Population <- Population[Selection,]
     FunctionValue <- FunctionValue[Selection,]
+    
+    all_population <- C(all_population, Population)
+    all_functionvalues <- C(all_functionvalues, FunctionValue)
     
     #reference vector adaption
     if (Gene %% ceiling(Generations*fr) == 0){
@@ -97,6 +85,15 @@ rvea <- function(objective, Generations, M, K, N, p1, p2, lbound, ubound,
     # printf('Progress %4s',as.character(Gene/Generations*100));
     
   }
-  # P_output(Population,toc,'RVEA',Problem,M,Run)
-  P_output(objective, Population)
+  
+  FunctionValue <- P_evaluate(objective, Population)
+  list[FrontValue,] <- P_sort(FunctionValue, 'first')
+  NonDominated  <- (FrontValue == 1)
+  
+  Population    <- Population[NonDominated,]
+  FunctionValue <- FunctionValue[NonDominated,]
+  return (list(population=Population, functionvalue=FunctionValue, 
+               num_solutions=length(NonDominated), 
+               all_population=all_population, all_functionvalues=all_functionvalues) )
+  
 }
