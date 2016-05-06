@@ -1,15 +1,18 @@
 ###
 # Arguments
-# objective: objective function.. returns a row vector.. 
+# fn: fn function.. returns a row vector.. 
 
-P_evaluate <- function(objective, Population){
-    results<-apply(Population, FUN=function(x){objective(x)}, MARGIN=1)
+source("utils.R")
+source("F_misc.R")
+
+P_evaluate <- function(fn, Population){
+    results<-apply(Population, FUN=function(x){fn(x)}, MARGIN=1)
     results <- t(results)
     results
 }
 
-rvea <- function(objective, maxgen, fncnt, varcnt, popsize, p1, p2, lowerbound, upperbound, 
-                 opt, alpha=2, fr=0.1, FE=0){
+rvea <- function(fn, varcnt, fncnt, lowerbound, upperbound, opt, popsize, maxgen, p1, p2,  
+                 alpha=2, fr=0.1, FE=0){
   
   if (opt == 0){
     optimize_func <- Min
@@ -44,7 +47,7 @@ rvea <- function(objective, maxgen, fncnt, varcnt, popsize, p1, p2, lowerbound, 
   Coding <- "Real"
   Population <- rand(popsize,varcnt)
   Population <- Population*repmat(upperbound,popsize,1)+(1-Population)*repmat(lowerbound,popsize,1)
-  FunctionValue <- P_evaluate(objective, Population)
+  FunctionValue <- P_evaluate(fn, Population)
   
   all_population <- Population
   all_functionvalues <- FunctionValue
@@ -58,7 +61,7 @@ rvea <- function(objective, maxgen, fncnt, varcnt, popsize, p1, p2, lowerbound, 
     FE <- FE + size(Offspring, 1)
     
     Population <- C(Population, Offspring)
-    val <- P_evaluate(objective, Offspring)
+    val <- P_evaluate(fn, Offspring)
     FunctionValue <- C(FunctionValue, val)
     
     #APD based selection
@@ -92,14 +95,14 @@ rvea <- function(objective, maxgen, fncnt, varcnt, popsize, p1, p2, lowerbound, 
     
   }
   
-  FunctionValue <- P_evaluate(objective, Population)
+  FunctionValue <- P_evaluate(fn, Population)
   list[FrontValue,] <- P_sort(FunctionValue, 'first')
   NonDominated  <- (FrontValue == 1)
   
   Population    <- Population[NonDominated,]
   FunctionValue <- FunctionValue[NonDominated,]
-  return (list(population=Population, functionvalue=FunctionValue, 
-               num_solutions=length(NonDominated), 
-               all_population=all_population, all_functionvalues=all_functionvalues) )
+  return (list(paramvalues=Population, objfnvalues=FunctionValue, 
+               numsols=length(NonDominated), 
+               stored_params=all_population, popFit=all_functionvalues) )
   
 }
