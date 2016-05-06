@@ -22,8 +22,8 @@ P_generator <- function(MatingPool,Boundary,Coding,MaxOffspring = 0){
             miu  <- rand(1, D)
             beta[miu<=0.5] <- (2*miu[miu<=0.5])^(1/(DisC+1))
             beta[miu>0.5]  <- (2-2*miu[miu>0.5])^(-1/(DisC+1))
-            beta <- beta * (-1)^round(R(runif(D, 0, 1)))
-            beta[runif(D)>ProC] <- 1
+            beta <- beta * (-1)^round(rand(1, D))
+            beta[rand(1, D)>ProC] <- 1
             Offspring[i,] <- (MatingPool[i,] +MatingPool[i+1,])/2 + beta * (MatingPool[i,]-MatingPool[i+1,])/2
             Offspring[i+1,] <- (MatingPool[i,]+MatingPool[i+1,])/2 - beta * (MatingPool[i,]-MatingPool[i+1,])/2
         }
