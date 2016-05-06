@@ -19,7 +19,7 @@ P_sort <- function(FunctionValue, operation = ""){
     MaxFront <- 0
     Sorted <- zeros(1,N)
     
-    list[FunctionValue,rank] <- sortrows(FunctionValue)
+    list[FunctionValue,rank] <- Sortrows(FunctionValue)
     FrontValue <- zeros(1,N) + Inf
     
     while ((kinds == 1 && sum(Sorted)<N) || (kinds == 2 && sum(Sorted)<N/2) || (kinds == 3 && MaxFront<1)){

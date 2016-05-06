@@ -187,7 +187,7 @@ P_SDTLZ <- function(Output, Boundary, Coding) {
 
 # function W in T_uniform(k,M)){){
 T_uniform <- function (k, M){
-    H <- floor((k*Prod(1:(M-1)) )^(1/(M-1)))
+    H <- floor((k*prod(1:(M-1)) )^(1/(M-1)))
     while (nchoosek(H+M-1,M-1) >= k && H > 0){
         H <- H-1
     }
