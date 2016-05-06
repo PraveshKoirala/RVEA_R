@@ -36,7 +36,7 @@ set_problem <- function(Problem,M){
 set_algorithm <- function(Algorithm,Problem,M){
     Parameter <- c(NaN, NaN)
     
-    # find last index that's not the digit.. probably can be optimized a lot.
+    # find last index that's not the digit.. 
     k <- find_last_alphabet_index(Problem)
     
     D <- as.numeric(substr(Problem, k+1, nchar(Problem)))

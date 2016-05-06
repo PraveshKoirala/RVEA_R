@@ -4,5 +4,5 @@ This is a port of the RVEA (reference vector guided evolutionary algorithm) for 
 
 TODO:
   - P_objective.R function can have a lot of bugs, verify
-
+  - Remove rand_seed
   - Error in objective function.. 1:0 in R is [1 0] and not simply empty.. see DTLZ2 for solution
