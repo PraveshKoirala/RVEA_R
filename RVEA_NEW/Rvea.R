@@ -57,7 +57,7 @@ rvea <- function(fn, varcnt, fncnt, lowerbound, upperbound, opt, popsize, maxgen
     MatingPool <- F_mating(Population)
     
     Offspring <- P_generator(MatingPool,Boundary,Coding,popsize);  
-    
+
     FE <- FE + size(Offspring, 1)
     
     Population <- C(Population, Offspring)
@@ -70,8 +70,16 @@ rvea <- function(fn, varcnt, fncnt, lowerbound, upperbound, opt, popsize, maxgen
     Population <- Population[Selection,]
     FunctionValue <- FunctionValue[Selection,]
     
-    all_population <- C(all_population, Population)
-    all_functionvalues <- C(all_functionvalues, FunctionValue)
+    p <- Population
+    f <- FunctionValue
+    if (size(p,1) != popsize){
+      delta <- popsize - size(p, 1)
+      s <- sample(size(p,1), delta)
+      p <- C(Population, Population[s,])
+      f <- C(FunctionValue, FunctionValue[s,])
+    }
+    all_population <- C(all_population, p)
+    all_functionvalues <- C(all_functionvalues, f)
     
     #reference vector adaption
     if (Gene %% ceiling(maxgen*fr) == 0){
