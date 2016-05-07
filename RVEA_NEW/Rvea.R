@@ -87,6 +87,9 @@ rvea <- function(fn, varcnt, fncnt, lowerbound, upperbound, opt, popsize, maxgen
     
     #reference vector adaption
     if (Gene %% ceiling(maxgen*fr) == 0){
+      if (is.null(FunctionValue)){
+        print("null")
+      }
       #update the reference vectors
       Zmin <- Min(FunctionValue,1)
       Zmax <- Max(FunctionValue,1)

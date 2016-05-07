@@ -20,7 +20,7 @@ Main <- function(){
   # remove this while using, or change it.. 
   set.seed(21)
   
-  
+  assign("last.warning", NULL, envir = baseenv())  
   
   viennet <- function(x){
     f1 <- 0.5*(x[1]^2+x[2]^2)+sin(x[1]^2+x[2]^2)
@@ -29,15 +29,15 @@ Main <- function(){
     return(c(f1,f2,f3))
   }
   
-  p1 <- 12
-  p2 <- 2
+  p1 <- 23
+  p2 <- 0
   
   varcount <- 12
   fncount <- 3
   lbound <- rep(0,12)
   ubound <- rep(1,12)
   optmin <- 0
-  popsize <- 97
+  popsize <- 301
   maxgen <- 250
   
   ex1 <- rvea(dtlz4_3,varcnt=varcount,fncnt=fncount,
