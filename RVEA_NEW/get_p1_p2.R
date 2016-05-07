@@ -3,7 +3,7 @@
 
 # choose parameters here..
 npopulation <- 100
-functioncount <- 2
+functioncount <- 3
 
 
 

@@ -29,22 +29,20 @@ Main <- function(){
     return(c(f1,f2,f3))
   }
   
-  p1 <- 13
-  p2 <- 0
+  p1 <- 12
+  p2 <- 2
   
-  varcount <- 11
-  fncount <- 2
-  lbound <- rep(0,11)
-  ubound <- rep(1,11)
+  varcount <- 12
+  fncount <- 3
+  lbound <- rep(0,12)
+  ubound <- rep(1,12)
   optmin <- 0
-  popsize <- 100
+  popsize <- 97
   maxgen <- 250
   
-  ex1 <- rvea(dtlz2_2,varcnt=varcount,fncnt=fncount,
+  ex1 <- rvea(dtlz4_3,varcnt=varcount,fncnt=fncount,
                  lowerbound=lbound,upperbound=ubound,opt=optmin, popsize=popsize,maxgen=maxgen,
               p1=p1, p2=p2)
-  
-  total_population <- ex1$total_population  # npop + ngen*npop
   
   ex1$paramvalues
   ex1$objfnvalues  

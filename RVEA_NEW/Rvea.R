@@ -32,7 +32,6 @@ rvea <- function(fn, varcnt, fncnt, lowerbound, upperbound, opt, popsize, maxgen
   }
   V <- Vs
   
-  
   maxgen <- floor(Evaluations/popsize)
   
   #calculat neighboring angle for angle normalization
@@ -74,7 +73,12 @@ rvea <- function(fn, varcnt, fncnt, lowerbound, upperbound, opt, popsize, maxgen
     f <- FunctionValue
     if (size(p,1) != popsize){
       delta <- popsize - size(p, 1)
-      s <- sample(size(p,1), delta)
+      if (delta > size(p,1)){
+        s <- sample(size(p,1), delta, replace=T)
+      }
+      else{
+        s <- sample(size(p, 1), delta, replace = F)
+      }
       p <- C(Population, Population[s,])
       f <- C(FunctionValue, FunctionValue[s,])
     }

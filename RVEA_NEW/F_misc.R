@@ -29,6 +29,7 @@ uFunctionValue <- FunctionValue / div
 # Matrix multiplication
 cosine <- uFunctionValue %*% t(V) #calculate the cosine values between each solution and each vector
 acosine <- acos(cosine)
+
 # call max with argument to give index too..
 list[maxc, maxcidx] <- Max(cosine, 2, T)
 
