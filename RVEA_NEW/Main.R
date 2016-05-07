@@ -29,22 +29,18 @@ Main <- function(){
     return(c(f1,f2,f3))
   }
   
-  # reference vector
   p1 <- 13
   p2 <- 0
   
-  varcount <- 2
-  fncount <- 3
-  lbound <- c(-3,-3)
-  ubound <- c(3,3)
+  varcount <- 11
+  fncount <- 2
+  lbound <- rep(0,11)
+  ubound <- rep(1,11)
   optmin <- 0
   popsize <- 100
-  maxgen <- 100
+  maxgen <- 250
   
-  Generations <- 500 # generations
-  N <- 105  # npop
-  
-  ex1 <- rvea(viennet,varcnt=varcount,fncnt=fncount,
+  ex1 <- rvea(dtlz2_2,varcnt=varcount,fncnt=fncount,
                  lowerbound=lbound,upperbound=ubound,opt=optmin, popsize=popsize,maxgen=maxgen,
               p1=p1, p2=p2)
   
