@@ -117,7 +117,7 @@ rvea <- function(fn, varcnt, fncnt, lowerbound, upperbound, opt, popsize, maxgen
   Population    <- Population[NonDominated,]
   FunctionValue <- FunctionValue[NonDominated,]
   return (list(paramvalues=Population, objfnvalues=FunctionValue, 
-               numsols=length(NonDominated), 
+               numsols=size(Population, 1), 
                stored_params=all_population, popFit=all_functionvalues) )
   
 }
