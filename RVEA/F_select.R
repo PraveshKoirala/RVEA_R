@@ -1,7 +1,7 @@
 # The selection function in RVEA
 #function [Selection] = F_select(FunctionValue, V, theta0, refV)
 # Completed!
-F_select <- function(FunctionValue, V, theta0, refV, optimize_func){
+F_select <- function(FunctionValue, V, theta0, refV){
 
   # disable this entire segment
 #   values <- readMat("function_value.mat")
@@ -16,7 +16,7 @@ M <- NM[2]
 VN <- size(V, 1)
 
 # only name is Zmin, but it depends upon the optimize_func.. can be min or max
-Zmin <- optimize_func(FunctionValue ,1)
+Zmin <- Min(FunctionValue ,1)
 
 #Translation
 FunctionValue <- (FunctionValue - repmat(Zmin, R(size(FunctionValue,1), 1)) )

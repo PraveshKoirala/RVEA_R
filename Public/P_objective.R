@@ -219,6 +219,7 @@ T_uniform <- function (k, M){
     Temp <- nchoosek(1:(H+M-1),M-1)-repmat(0:(M-2),nchoosek(H+M-1,M-1),1)-1
     W <- zeros(k,M)
     W[,1] <- Temp[,1]-0   # why subtract 0? weird..
+    if((M-1)>=2)
     for (i in 2 : (M-1)) {
         W[,i] <- Temp[,i]-Temp[,i-1]
     }
