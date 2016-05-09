@@ -40,7 +40,7 @@ Main <- function(){
   popsize <- 301
   maxgen <- 250
   
-  ex1 <- rvea(dtlz2_3,varcnt=varcount,fncnt=fncount,
+  ex1 <- rvea(dtlz4_3,varcnt=varcount,fncnt=fncount,
                  lowerbound=lbound,upperbound=ubound,opt=optmin, popsize=popsize,maxgen=maxgen,
               p1=p1, p2=p2)
   

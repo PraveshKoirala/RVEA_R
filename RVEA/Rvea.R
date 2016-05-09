@@ -11,6 +11,9 @@ P_evaluate <- function(objective, Population){
 rvea <- function(objective, maxgen, fncnt, varcnt, popsize, p1, p2, lowerbound, upperbound, 
                  opt, alpha=2, fr=0.1, FE=0){
   
+  # disable drop by default.. 
+  # `[` <- function(...) base::`[`(...,drop=FALSE)
+  
   if (opt == 0){
     optimize_func <- Min
   }

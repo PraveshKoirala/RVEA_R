@@ -192,6 +192,3 @@ list <- structure(NA,class="result")
   }
   x
 }
-
-# disable drop by default.. 
-`[` <- function(...) base::`[`(...,drop=FALSE)
