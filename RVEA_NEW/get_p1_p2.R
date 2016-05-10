@@ -2,14 +2,14 @@
 
 
 # choose parameters here..
-npopulation <- 300
+npopulation <- 305
 functioncount <- 3
 
 
 
 nchoosek = function(n, x) {
   if (length(n)==1)
-    return(factorial(n) / (factorial(x) * factorial(n-x)))
+    return(choose(n, x))
   else if (length(n)>1) {
     # n is a set.. R contains a function that emulates the behaviour of nchoosek
     return (t(combn(n, x)))
@@ -30,6 +30,7 @@ p1 <- p1 - 1
 
 # Another sufficiently large number
 Run2<-100
+N_p2 <- 0
 
 for (p2 in 0:Run2){
   N_ <- nchoosek(p2+functioncount-1, functioncount-1)
@@ -37,9 +38,11 @@ for (p2 in 0:Run2){
     break
   N_p2 = N_
 }
+p2 <- max(p2-1, 0)
 
-p2 <- p2-1
-p2 <- max(p2, 0)
-suggested_pop = nchoosek(p1+functioncount-1, functioncount-1) + nchoosek(p2+functioncount-1, functioncount-1)
+suggested_pop = N_p1 
+
+if (p2>0) suggested_pop = suggested_pop + N_p2
+ 
 print(list(p1=p1, p2=p2, suggested_pop=suggested_pop))
 # print suggested population
